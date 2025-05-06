@@ -116,5 +116,35 @@ public class BookEntity {
  	public void setAvailability(boolean availability) {
  		this.availability = availability;
  	}
+
+	public Object getPublishedDate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setPublishedDate(Object publishedDate) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Object getCategory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object getQuantity() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setCategory(Object category) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setQuantity(Object quantity) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 

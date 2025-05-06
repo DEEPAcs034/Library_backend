@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add New Book</title>
-  <link rel="stylesheet" href="style1.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
   <nav class="navbar">
@@ -14,6 +14,7 @@
       <a href="index.html"><i class="fas fa-home"></i> Home</a>
       <a href="books.html"><i class="fas fa-book"></i> Books</a>
       <a href="add-book.html" class="active"><i class="fas fa-plus"></i> Add Book</a>
+      <a href="update-book.html"><i class="fas fa-edit"></i> Update Book</a>
       <a href="search.html"><i class="fas fa-search"></i> Search</a>
     </div>
   </nav>
@@ -58,6 +59,66 @@
     </div>
   </div>
 
-  <script src="js/main.js"></script>
+  <script>
+    document.getElementById("addBookForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      // Show loading state
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+      submitBtn.disabled = true;
+
+      const book = {
+        title: document.getElementById("title").value,
+        author: document.getElementById("author").value,
+        isbn: document.getElementById("isbn").value
+      };
+
+      fetch("/books", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(book)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(() => {
+        // Show success message
+        const successMessage = document.createElement('div');
+        successMessage.className = 'alert alert-success';
+        successMessage.innerHTML = `
+          <i class="fas fa-check-circle"></i>
+          Book added successfully!
+        `;
+        document.querySelector('.form-container').prepend(successMessage);
+
+        // Reset form
+        document.getElementById("addBookForm").reset();
+
+        // Redirect after delay
+        setTimeout(() => {
+          window.location.href = "books.html";
+        }, 1500);
+      })
+      .catch(error => {
+        // Show error message
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'alert alert-danger';
+        errorMessage.innerHTML = `
+          <i class="fas fa-exclamation-circle"></i>
+          Error adding book. Please try again.
+        `;
+        document.querySelector('.form-container').prepend(errorMessage);
+
+        // Reset button state
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      });
+    });
+  </script>
 </body>
 </html>
